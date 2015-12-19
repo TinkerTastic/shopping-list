@@ -19,7 +19,6 @@ Storage.prototype.get = function(id){
 };
 
 Storage.prototype.update = function(update){
-    console.log(update);
     var item = this.items[update.id];
     item.name = update.name;
     return item;

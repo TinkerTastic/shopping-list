@@ -11,8 +11,7 @@ chai.use(chaiHttp);
 
 describe('Shopping List', function() {
     beforeEach(function(){
-        app = server.app;
-        storage = server.storage;
+        //app.bootstrap();
     });
 
     it('should list items on GET', function(done) {
@@ -91,3 +90,4 @@ describe('Shopping List', function() {
             });
     });
 });
+

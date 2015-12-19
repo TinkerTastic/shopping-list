@@ -2,76 +2,81 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 
-var Storage = function() {
+var Storage = function () {
     this.items = [];
     this.id = 0;
 };
 
-Storage.prototype.add = function(name) {
+Storage.prototype.add = function (name) {
     var item = {name: name, id: this.id};
     this.items.push(item);
     this.id += 1;
     return item;
 };
 
-Storage.prototype.get = function(id){
+Storage.prototype.get = function (id) {
     var target = null;
-    for(var i = 0; i < this.items.length; i++){
+    for (var i = 0; i < this.items.length; i++) {
         item = this.items[i];
-        if(item.id == id){
+        if (item.id == id) {
             target = item;
             break;
         }
-        }
+    }
     return target;
 };
 
-Storage.prototype.update = function(update){
+Storage.prototype.update = function (update) {
     var item = this.items[update.id];
     item.name = update.name;
     return item;
 };
 
-Storage.prototype.delete = function(id){
+Storage.prototype.delete = function (id) {
     var item = null;
-    for(var i = 0; i < this.items.length; i++){
+    for (var i = 0; i < this.items.length; i++) {
         item = this.items[i];
-        if(item.id == id){
-            this.items.splice(i,1);
+        if (item.id == id) {
+            this.items.splice(i, 1);
         }
     }
     return item;
 };
 
-var storage = new Storage();
-storage.add('Broad beans');
-storage.add('Tomatoes');
-storage.add('Peppers');
-
+var storage = null;
 var app = express();
 app.use(express.static('public'));
 
+app.bootstrap = function () {
+    storage = new Storage();
+    storage.add('Broad beans');
+    storage.add('Tomatoes');
+    storage.add('Peppers');
+    console.log('bootstrap')
+};
 
-app.get('/items', function(req, res) {
+app.bootstrap();
+
+app.get('/items', function (req, res) {
     res.json(storage.items);
 });
 
-app.put('/items/:id', jsonParser, function(req,res){
+app.put('/items/:id', jsonParser, function (req, res) {
     var item = storage.get(req.params.id);
     if (!req.body) {
         return res.sendStatus(400);
     }
-    else if(!item){
+    else if (!item) {
         item = storage.add(req.body.name);
         return res.status(200).json(item);
-    }else{
+    } else {
         item.name = req.body.name;
         return res.status(200).json(storage.update(item));
     }
 });
 
 
-app.post('/items', jsonParser, function(req, res) {
+app.post('/items', jsonParser, function (req, res) {
     if (!req.body) {
         return res.sendStatus(400);
     }
@@ -80,15 +85,15 @@ app.post('/items', jsonParser, function(req, res) {
     res.status(201).json(item);
 });
 
-app.delete('/items/:id', jsonParser, function(req, res){
+app.delete('/items/:id', jsonParser, function (req, res) {
     if (!req.params.id) {
         return res.sendStatus(400);
     }
     var item = storage.delete(parseInt(req.params.id));
-    if(item){
+    if (item) {
         res.status(200).json(item);
     }
-    else{
+    else {
         res.status(404).json("invalid id");
     }
 

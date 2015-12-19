@@ -87,3 +87,6 @@ app.delete('/items/:id', jsonParser, function(req, res){
 });
 
 app.listen(process.env.PORT || 8081);
+
+exports.app = app;
+exports.storage = storage;

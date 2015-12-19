@@ -13,5 +13,9 @@
     "shopping"
   ],
   "author": "Peter S. Lindhard",
-  "license": "none"
+  "license": "none",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "chai-http": "^1.0.0"
+  }
 }

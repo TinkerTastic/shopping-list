@@ -8,7 +8,13 @@ var storage = server.storage;
 
 chai.use(chaiHttp);
 
+
 describe('Shopping List', function() {
+    beforeEach(function(){
+        app = server.app;
+        storage = server.storage;
+    });
+
     it('should list items on GET', function(done) {
         chai.request(app)
             .get('/items')
@@ -54,7 +60,7 @@ describe('Shopping List', function() {
                 done();
             });
     });
-    it('should edit an item on put', function(done){
+    it('should edit an item on PUT', function(done){
         chai.request(app)
             .put('/items/0')
             .send({name: 'Apple', id:'0'})
@@ -74,12 +80,13 @@ describe('Shopping List', function() {
                 done();
             });
     });
-    it('should delete an item on delete', function(done){
+    it('should delete an item on DELETE', function(done){
         chai.request(app)
-            .delete('items/0')
-            .send({name: 'Tomatoes', id: '0'})
+            .delete('/items/0')
             .end(function(err, res){
-
+                res.should.have.status(200);
+                storage.items.length.should.equal(3);
+                should.equal(storage.get(0), null);
                 done();
             });
     });

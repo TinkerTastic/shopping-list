@@ -15,7 +15,15 @@ Storage.prototype.add = function(name) {
 };
 
 Storage.prototype.get = function(id){
-    return this.items[id] || null;
+    var target = null;
+    for(var i = 0; i < this.items.length; i++){
+        item = this.items[i];
+        if(item.id == id){
+            target = item;
+            break;
+        }
+        }
+    return target;
 };
 
 Storage.prototype.update = function(update){
@@ -24,11 +32,15 @@ Storage.prototype.update = function(update){
     return item;
 };
 
-Storage.prototype.delete = function(item){
-    if(!item){
-        return;
+Storage.prototype.delete = function(id){
+    var item = null;
+    for(var i = 0; i < this.items.length; i++){
+        item = this.items[i];
+        if(item.id == id){
+            this.items.splice(i,1);
+        }
     }
-    this.items.splice(item.id,1);
+    return item;
 };
 
 var storage = new Storage();
@@ -72,11 +84,8 @@ app.delete('/items/:id', jsonParser, function(req, res){
     if (!req.params.id) {
         return res.sendStatus(400);
     }
-
-    var item = storage.get(req.params.id);
-
+    var item = storage.delete(parseInt(req.params.id));
     if(item){
-        storage.delete(item);
         res.status(200).json(item);
     }
     else{

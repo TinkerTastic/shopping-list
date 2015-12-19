@@ -89,5 +89,15 @@ describe('Shopping List', function() {
                 done();
             });
     });
+
+    it('should fail with invalid id on DELETE', function(done){
+        chai.request(app)
+            .delete('/items/9000')
+            .end(function(err, res){
+                res.should.have.status(404);
+                storage.items.length.should.equal(3);
+                done();
+            });
+    })
 });
 

@@ -35,8 +35,8 @@ Storage.prototype.update = function (update) {
 Storage.prototype.delete = function (id) {
     var item = null;
     for (var i = 0; i < this.items.length; i++) {
-        item = this.items[i];
-        if (item.id == id) {
+        if (this.items[i].id == id) {
+            item = this.items[i];
             this.items.splice(i, 1);
         }
     }

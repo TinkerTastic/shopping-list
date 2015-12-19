@@ -1,0 +1,17 @@
+{
+  "name": "shopping-list",
+  "version": "1.0.0",
+  "description": "A shopping list api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "shopping"
+  ],
+  "author": "Peter S. Lindhard",
+  "license": "none"
+}

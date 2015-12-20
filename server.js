@@ -43,19 +43,19 @@ Storage.prototype.delete = function (id) {
     return item;
 };
 
-var storage = null;
-var app = express();
-app.use(express.static('public'));
-
-app.bootstrap = function () {
-    storage = new Storage();
+Storage.prototype.bootstrap = function () {
+    this.items = [];
+    this.id = 0;
     storage.add('Broad beans');
     storage.add('Tomatoes');
     storage.add('Peppers');
-    console.log('bootstrap')
 };
 
-app.bootstrap();
+var storage = new Storage();
+var app = express();
+app.use(express.static('public'));
+
+storage.bootstrap();
 
 app.get('/items', function (req, res) {
     res.json(storage.items);

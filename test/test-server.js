@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 
 describe('Shopping List', function() {
     beforeEach(function(){
-        //app.bootstrap();
+        storage.bootstrap();
     });
 
     it('should list items on GET', function(done) {
@@ -84,7 +84,7 @@ describe('Shopping List', function() {
             .delete('/items/0')
             .end(function(err, res){
                 res.should.have.status(200);
-                storage.items.length.should.equal(3);
+                storage.items.length.should.equal(2);
                 should.equal(storage.get(0), null);
                 done();
             });

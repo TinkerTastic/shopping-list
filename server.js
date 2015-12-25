@@ -63,7 +63,7 @@ app.get('/items', function (req, res) {
 
 app.put('/items/:id', jsonParser, function (req, res) {
     var item = storage.get(req.params.id);
-    if (!req.body) {
+    if (!req.body.name) {
         return res.sendStatus(400);
     }
     else if (!item) {

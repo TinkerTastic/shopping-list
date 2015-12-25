@@ -79,6 +79,32 @@ describe('Shopping List', function() {
                 done();
             });
     });
+
+    it('should create new item if id unknown on PUT', function(done){
+        chai.request(app)
+            .put('/items/100')
+            .send({name: 'Apple', id:'100'})
+            .end(function(err, res){
+                res.should.have.status(200);
+                res.body.should.have.property('name');
+                res.body.should.have.property('id');
+                res.body.name.should.equal('Apple');
+                res.body.id.should.be.a('number');
+                storage.items[3].name.should.equal('Apple');
+                storage.items[3].id.should.equal(res.body.id);
+                done();
+            });
+    });
+
+    it('should fail where no body is present on PUT', function(done){
+        chai.request(app)
+            .put('/items/100')
+            .end(function(err, res){
+                res.should.have.status(400);
+                done();
+            });
+    });
+
     it('should delete an item on DELETE', function(done){
         chai.request(app)
             .delete('/items/0')
